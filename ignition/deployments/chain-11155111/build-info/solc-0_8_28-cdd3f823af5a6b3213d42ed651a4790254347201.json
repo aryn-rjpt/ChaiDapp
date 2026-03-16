@@ -1,0 +1,39 @@
+{
+  "_format": "hh3-sol-build-info-1",
+  "id": "solc-0_8_28-cdd3f823af5a6b3213d42ed651a4790254347201",
+  "solcVersion": "0.8.28",
+  "solcLongVersion": "0.8.28+commit.7893614a",
+  "userSourceNameMap": {
+    "contracts/chai.sol": "project/contracts/chai.sol"
+  },
+  "input": {
+    "language": "Solidity",
+    "settings": {
+      "evmVersion": "cancun",
+      "optimizer": {
+        "enabled": true,
+        "runs": 200
+      },
+      "outputSelection": {
+        "*": {
+          "": [
+            "ast"
+          ],
+          "*": [
+            "abi",
+            "evm.bytecode",
+            "evm.deployedBytecode",
+            "evm.methodIdentifiers",
+            "metadata"
+          ]
+        }
+      },
+      "remappings": []
+    },
+    "sources": {
+      "project/contracts/chai.sol": {
+        "content": "// SPDX-License-Identifier: GPL-3.0\n\npragma solidity >=0.8.2 <0.9.0;\n\ncontract Chai {\n    struct Memo {\n        string name;\n        string message;\n        uint timestamp;\n        address from;\n    }\n\n    Memo[] memos;\n\n    address payable owner;\n\n    constructor() {\n        owner = payable(msg.sender);\n    }\n\n    function buyChai(\n        string calldata name,\n        string calldata message\n    ) external payable {\n        require(msg.value > 0, \"Please pay more than 0 ether.\");\n        (bool success, ) = owner.call{value: msg.value}(\"\");\n        require(success, \"falied\");\n        memos.push(Memo(name, message, block.timestamp, msg.sender));\n    }\n\n    function getMemos() public view returns (Memo[] memory) {\n        return memos;\n    }\n}\n"
+      }
+    }
+  }
+}
